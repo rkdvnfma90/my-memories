@@ -6,15 +6,14 @@ import config from './config/key.js'
 import postRoutes from './routes/posts.js'
 
 const app = express()
-
-app.use('/posts', postRoutes)
+const CONNECTION_URL = config.mongoURI
+const PORT = process.env.PORT || 5000
 
 app.use(bodyParser.json({ limit: '30mb', extended: true }))
 app.use(bodyParser.urlencoded({ limit: '30mb', extended: true }))
 app.use(cors())
 
-const CONNECTION_URL = config.mongoURI
-const PORT = process.env.PORT || 5000
+app.use('/posts', postRoutes)
 
 mongoose
   .connect(CONNECTION_URL, {
