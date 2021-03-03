@@ -29,7 +29,7 @@ const Form = () => {
         className={`${classes.root} ${classes.form}`}
         onSubmit={handleSubmit}
       >
-        <Typography variant="h6">기억 작성</Typography>
+        <Typography variant="h6">Memory</Typography>
         <TextField
           name="creator"
           variant="outlined"
