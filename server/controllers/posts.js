@@ -1,4 +1,5 @@
 import PostMessage from '../models/postMessage.js'
+import mongoose from 'mongoose'
 
 export const getPosts = async (req, res) => {
   try {
@@ -18,4 +19,24 @@ export const createPost = async (req, res) => {
   } catch (error) {
     res.status(409).json({ message: error.message })
   }
+}
+
+export const updatePost = async (req, res) => {
+  // route에서 '/:값' 으로 넘어온 값을 req.params로 가져옴
+  const { id: _id } = req.params
+  const post = req.body
+
+  if (!mongoose.Types.ObjectId.isValid(_id)) {
+    return res.status(404).send('해당 Post의 ID가 존재하지 않습니다.')
+  }
+
+  const updatedPost = await PostMessage.findByIdAndUpdate(
+    _id,
+    { ...post, _id },
+    {
+      new: true,
+    }
+  )
+
+  res.json(updatedPost)
 }
