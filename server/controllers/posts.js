@@ -40,3 +40,15 @@ export const updatePost = async (req, res) => {
 
   res.json(updatedPost)
 }
+
+export const deletePost = async (req, res) => {
+  const { id: _id } = req.params
+
+  if (!mongoose.Types.ObjectId.isValid(_id)) {
+    return res.status(404).send('해당 Post의 ID가 존재하지 않습니다.')
+  }
+
+  await PostMessage.findByIdAndRemove(_id)
+
+  res.json({ message: '삭제되었습니다.' })
+}
