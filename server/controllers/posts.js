@@ -52,3 +52,20 @@ export const deletePost = async (req, res) => {
 
   res.json({ message: '삭제되었습니다.' })
 }
+
+export const likePost = async (req, res) => {
+  const { id: _id } = req.params
+
+  if (!mongoose.Types.ObjectId.isValid(_id)) {
+    return res.status(404).send('해당 Post의 ID가 존재하지 않습니다.')
+  }
+
+  const post = await PostMessage.findById(_id)
+  const updatedPost = await PostMessage.findByIdAndUpdate(
+    _id,
+    { likeCount: post.likeCount + 1 },
+    { new: true }
+  )
+
+  res.json(updatedPost)
+}

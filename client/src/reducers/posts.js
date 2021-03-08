@@ -4,6 +4,7 @@ const posts = (posts = [], action) => {
       return action.payload
     case 'CREATE':
       return [...posts, action.payload]
+    case 'LIKE':
     case 'UPDATE':
       // actions.payload 에는 업데이트된 post가 담겨있음
       return posts.map((post) =>
