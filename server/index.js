@@ -18,6 +18,10 @@ app.use(cors())
 
 app.use('/posts', postRoutes)
 
+app.get('/', (req, res) => {
+  res.send('welcome to my memories :)')
+})
+
 mongoose
   .connect(process.env.CONNECTION_URL, {
     useNewUrlParser: true,
