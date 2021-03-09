@@ -15,8 +15,9 @@ import ThumbUpAltOutlined from '@material-ui/icons/ThumbUpAltOutlined'
 import moment from 'moment'
 import { useDispatch } from 'react-redux'
 import { deletePost, likePost } from '../../../actions/posts'
+import { SET_CURRENT_ID } from '../../../constants/actionTypes'
 
-const Post = ({ post, setCurrentId }) => {
+const Post = ({ post }) => {
   const classes = useStyles()
   const dispatch = useDispatch()
   const user = JSON.parse(localStorage.getItem('profile'))
@@ -69,7 +70,9 @@ const Post = ({ post, setCurrentId }) => {
           <Button
             style={{ color: 'white' }}
             size="small"
-            onClick={() => setCurrentId(post._id)}
+            onClick={() =>
+              dispatch({ type: SET_CURRENT_ID, payload: post._id })
+            }
           >
             <MoreHorizIcon fontSize="default" />
           </Button>

@@ -4,17 +4,20 @@ import FileBase from 'react-file-base64'
 import { useDispatch, useSelector } from 'react-redux'
 import { createPost, updatePost } from '../../actions/posts'
 import { TextField, Button, Typography, Paper } from '@material-ui/core'
+import { SET_CURRENT_ID } from '../../constants/actionTypes'
 
-const Form = ({ currentId, setCurrentId }) => {
+const Form = () => {
   const [postData, setPostData] = useState({
     title: '',
     message: '',
     tags: '',
     selectedFile: '',
   })
+  const { currentId } = useSelector((state) => state.currentId)
   const post = useSelector((state) =>
     currentId ? state.posts.find((post) => post._id === currentId) : null
   )
+
   const classes = useStyles()
   const dispatch = useDispatch()
   const user = JSON.parse(localStorage.getItem('profile'))
@@ -46,7 +49,7 @@ const Form = ({ currentId, setCurrentId }) => {
   }
 
   const clear = () => {
-    setCurrentId(null)
+    dispatch({ type: SET_CURRENT_ID, payload: null })
     setPostData({
       title: '',
       message: '',
