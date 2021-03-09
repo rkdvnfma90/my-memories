@@ -56,16 +56,29 @@ export const deletePost = async (req, res) => {
 export const likePost = async (req, res) => {
   const { id: _id } = req.params
 
+  // 여기서 req.userId에 접근할 수 있는 이유는 미들웨어의 req가 next인 이곳으로 넘어오기 때문
+  if (!req.userId) return res.json({ message: '권한이 없습니다.' })
+
   if (!mongoose.Types.ObjectId.isValid(_id)) {
     return res.status(404).send('해당 Post의 ID가 존재하지 않습니다.')
   }
 
   const post = await PostMessage.findById(_id)
-  const updatedPost = await PostMessage.findByIdAndUpdate(
-    _id,
-    { likeCount: post.likeCount + 1 },
-    { new: true }
-  )
+
+  // 해당 post에 이미 like 눌렀을 경우 중복으로 누르지 못하도록
+  const index = post.likes.findIndex((id) => id === String(req.userId))
+
+  if (index === -1) {
+    // like the post
+    post.likes.push(req.userId)
+  } else {
+    // cancel like the post
+    post.likes = post.likes.filter((id) => id !== String(req.userId))
+  }
+
+  const updatedPost = await PostMessage.findByIdAndUpdate(_id, post, {
+    new: true,
+  })
 
   res.json(updatedPost)
 }
