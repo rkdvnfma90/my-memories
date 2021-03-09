@@ -4,6 +4,7 @@ import { AppBar, Typography, Toolbar, Button, Avatar } from '@material-ui/core'
 import { useDispatch } from 'react-redux'
 import { LOGOUT } from '../../constants/actionTypes'
 import { useHistory, useLocation } from 'react-router-dom'
+import decode from 'jwt-decode'
 import useStyles from './styles'
 import memories from '../../images/memories.png'
 
@@ -26,7 +27,11 @@ function Navbar() {
   useEffect(() => {
     const token = user?.token
 
-    // JWT 작업 예정
+    if (token) {
+      const decodedToken = decode(token)
+      // 토큰만료되면(1시간) 로그아웃
+      if (decodedToken.exp * 1000 < new Date().getTime()) logout()
+    }
 
     setUser(JSON.parse(localStorage.getItem('profile')))
   }, [location])
