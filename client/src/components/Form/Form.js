@@ -7,7 +7,6 @@ import { TextField, Button, Typography, Paper } from '@material-ui/core'
 
 const Form = ({ currentId, setCurrentId }) => {
   const [postData, setPostData] = useState({
-    creator: '',
     title: '',
     message: '',
     tags: '',
@@ -18,6 +17,7 @@ const Form = ({ currentId, setCurrentId }) => {
   )
   const classes = useStyles()
   const dispatch = useDispatch()
+  const user = JSON.parse(localStorage.getItem('profile'))
 
   useEffect(() => {
     if (post) setPostData(post)
@@ -27,18 +27,27 @@ const Form = ({ currentId, setCurrentId }) => {
     e.preventDefault()
 
     if (currentId) {
-      dispatch(updatePost(currentId, postData))
+      dispatch(updatePost(currentId, { ...postData, name: user?.result?.name }))
     } else {
-      dispatch(createPost(postData))
+      dispatch(createPost({ ...postData, name: user?.result?.name }))
     }
 
     clear()
   }
 
+  if (!user?.result?.name) {
+    return (
+      <Paper className={classes.paper}>
+        <Typography variant="h6" align="center">
+          로그인 해주세요.
+        </Typography>
+      </Paper>
+    )
+  }
+
   const clear = () => {
     setCurrentId(null)
     setPostData({
-      creator: '',
       title: '',
       message: '',
       tags: '',
@@ -57,16 +66,6 @@ const Form = ({ currentId, setCurrentId }) => {
         <Typography variant="h6">
           {currentId ? '수정하기' : '기록하기'}
         </Typography>
-        <TextField
-          name="creator"
-          variant="outlined"
-          label="작성자"
-          fullWidth
-          value={postData.creator}
-          onChange={(e) =>
-            setPostData({ ...postData, creator: e.target.value })
-          }
-        />
         <TextField
           name="title"
           variant="outlined"

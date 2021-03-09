@@ -6,6 +6,17 @@ const API = axios.create({
 //const url = 'https://ab-my-memories.herokuapp.com'
 // const url = 'http://localhost:5000'
 
+// 요청이나 응답을 가로챌 수 있음
+API.interceptors.request.use((req) => {
+  if (localStorage.getItem('profile')) {
+    req.headers.authorization = `Bearer ${
+      JSON.parse(localStorage.getItem('profile')).token
+    }`
+  }
+
+  return req
+})
+
 export const fetchPosts = () => API.get('/posts')
 export const createPost = (newPost) => API.post('/posts', newPost)
 export const updatePost = (id, updatedPost) => {
