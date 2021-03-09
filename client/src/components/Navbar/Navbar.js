@@ -22,14 +22,12 @@ function Navbar() {
     setUser(null)
   }
 
-  console.log(user)
-
   useEffect(() => {
     const token = user?.token
 
     if (token) {
       const decodedToken = decode(token)
-      // 토큰만료되면(1시간) 로그아웃
+      // 토큰만료되면 로그아웃
       if (decodedToken.exp * 1000 < new Date().getTime()) logout()
     }
 
