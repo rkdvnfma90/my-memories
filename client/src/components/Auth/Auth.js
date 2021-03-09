@@ -15,17 +15,39 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 import useStyles from './styles'
 import Input from './Input'
 import Icon from './icon'
+import { signin, signup } from '../../actions/auth'
+
+const initialState = {
+  firstName: '',
+  lastName: '',
+  email: '',
+  password: '',
+  confirmPassworld: '',
+}
 
 function Auth() {
   const [showPassword, setShowPassword] = useState(false)
   const [isSignup, setIsSignup] = useState(false)
+  const [formData, setFormData] = useState(initialState)
 
   const classes = useStyles()
   const dispatch = useDispatch()
   const history = useHistory()
 
-  const handleSubmit = () => {}
-  const handleChange = () => {}
+  const handleSubmit = (e) => {
+    e.preventDefault()
+
+    // 회원가입
+    if (isSignup) {
+      dispatch(signup(formData, history))
+    } else {
+      // 로그인
+      dispatch(signin(formData, history))
+    }
+  }
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value })
+  }
   const handleShowPassword = () =>
     setShowPassword((prevShowPassword) => !prevShowPassword)
   const switchMode = () => {
