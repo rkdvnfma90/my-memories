@@ -1,9 +1,9 @@
 import axios from 'axios'
 
 const API = axios.create({
-  baseURL: 'https://ab-my-memories.herokuapp.com',
+  baseURL: 'http://localhost:5000',
 })
-//const url = 'https://ab-my-memories.herokuapp.com/posts'
+//const url = 'https://ab-my-memories.herokuapp.com'
 // const url = 'http://localhost:5000'
 
 export const fetchPosts = () => API.get('/posts')
@@ -14,5 +14,5 @@ export const updatePost = (id, updatedPost) => {
 export const deletePost = (id) => API.delete(`/posts/${id}`)
 export const likePost = (id) => API.patch(`/posts/${id}/likePost`)
 
-export const signIn = (formData) => API.post('/users/signIn', formData)
-export const signUp = (formData) => API.post('/users/signUp', formData)
+export const signIn = (formData) => API.post('/user/signIn', formData)
+export const signUp = (formData) => API.post('/user/signUp', formData)

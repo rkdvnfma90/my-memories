@@ -12,7 +12,7 @@ export const signIn = async (req, res) => {
       return res.status(404).json({ message: '사용자가 존재하지 않습니다.' })
     }
 
-    const isPasswordCorrect = await bcrypt.comparea(
+    const isPasswordCorrect = await bcrypt.compare(
       password,
       existingUser.password
     )
