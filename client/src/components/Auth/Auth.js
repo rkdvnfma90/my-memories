@@ -15,7 +15,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 import useStyles from './styles'
 import Input from './Input'
 import Icon from './icon'
-import { signin, signup } from '../../actions/auth'
+import { signIn, signUp } from '../../actions/auth'
 
 const initialState = {
   firstName: '',
@@ -27,7 +27,7 @@ const initialState = {
 
 function Auth() {
   const [showPassword, setShowPassword] = useState(false)
-  const [isSignup, setIsSignup] = useState(false)
+  const [isSignUp, setIsSignUp] = useState(false)
   const [formData, setFormData] = useState(initialState)
 
   const classes = useStyles()
@@ -38,11 +38,11 @@ function Auth() {
     e.preventDefault()
 
     // 회원가입
-    if (isSignup) {
-      dispatch(signup(formData, history))
+    if (isSignUp) {
+      dispatch(signUp(formData, history))
     } else {
       // 로그인
-      dispatch(signin(formData, history))
+      dispatch(signIn(formData, history))
     }
   }
   const handleChange = (e) => {
@@ -51,7 +51,7 @@ function Auth() {
   const handleShowPassword = () =>
     setShowPassword((prevShowPassword) => !prevShowPassword)
   const switchMode = () => {
-    setIsSignup((prevIsSignup) => !prevIsSignup)
+    setIsSignUp((prevIsSignUp) => !prevIsSignUp)
     setShowPassword(false)
   }
   const googleSuccess = async (res) => {
@@ -76,10 +76,10 @@ function Auth() {
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
         </Avatar>
-        <Typography variant="h5">{isSignup ? '회원가입' : '로그인'}</Typography>
+        <Typography variant="h5">{isSignUp ? '회원가입' : '로그인'}</Typography>
         <form className={classes.form} onSubmit={handleSubmit}>
           <Grid container spacing={2}>
-            {isSignup && (
+            {isSignUp && (
               <>
                 <Input
                   name="firstName"
@@ -109,7 +109,7 @@ function Auth() {
               type={showPassword ? 'text' : 'password'}
               handleShowPassword={handleShowPassword}
             />
-            {isSignup && (
+            {isSignUp && (
               <Input
                 name="confirmPassword"
                 label="Repeat Password"
@@ -126,7 +126,7 @@ function Auth() {
             color="primary"
             className={classes.submit}
           >
-            {isSignup ? '회원가입' : '로그인'}
+            {isSignUp ? '회원가입' : '로그인'}
           </Button>
           <GoogleLogin
             clientId="651794785606-03aduoudp0qph95sfjepro2eha6hqcoc.apps.googleusercontent.com"
@@ -150,7 +150,7 @@ function Auth() {
           <Grid container justify="flex-end">
             <Grid item>
               <Button onClick={switchMode}>
-                {isSignup
+                {isSignUp
                   ? '계정이 이미 있으시면 로그인 해주세요.'
                   : '계정이 없으시면 회원가입 해주세요.'}
               </Button>

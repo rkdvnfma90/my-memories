@@ -2,7 +2,7 @@ import User from '../models/user.js'
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 
-export const signin = async (req, res) => {
+export const signIn = async (req, res) => {
   const { email, password } = req.body
 
   try {
@@ -33,7 +33,7 @@ export const signin = async (req, res) => {
   }
 }
 
-export const signup = async (req, res) => {
+export const signUp = async (req, res) => {
   const { email, password, confirmPassword, firstName, lastName } = req.body
 
   try {
