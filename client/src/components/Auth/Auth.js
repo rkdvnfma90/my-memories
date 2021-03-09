@@ -7,14 +7,22 @@ import {
   Typography,
   Container,
 } from '@material-ui/core'
+import { GoogleLogin } from 'react-google-login'
+import { useDispatch } from 'react-redux'
+import { useHistory } from 'react-router-dom'
+import { AUTH } from '../../constants/actionTypes'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 import useStyles from './styles'
 import Input from './Input'
+import Icon from './icon'
 
 function Auth() {
-  const classes = useStyles()
   const [showPassword, setShowPassword] = useState(false)
   const [isSignup, setIsSignup] = useState(false)
+
+  const classes = useStyles()
+  const dispatch = useDispatch()
+  const history = useHistory()
 
   const handleSubmit = () => {}
   const handleChange = () => {}
@@ -23,6 +31,21 @@ function Auth() {
   const switchMode = () => {
     setIsSignup((prevIsSignup) => !prevIsSignup)
     setShowPassword(false)
+  }
+  const googleSuccess = async (res) => {
+    const result = res?.profileObj
+    const token = res?.tokenId
+
+    try {
+      dispatch({ type: AUTH, payload: { result, token } })
+      history.push('/')
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  const googleFailure = (error) => {
+    console.log(error)
+    console.log('구글 로그인에 실패하였습니다. 다시 시도해주세요.')
   }
 
   return (
@@ -73,6 +96,7 @@ function Auth() {
               />
             )}
           </Grid>
+
           <Button
             type="submit"
             fullWidth
@@ -82,6 +106,25 @@ function Auth() {
           >
             {isSignup ? '회원가입' : '로그인'}
           </Button>
+          <GoogleLogin
+            clientId="651794785606-03aduoudp0qph95sfjepro2eha6hqcoc.apps.googleusercontent.com"
+            render={(renderProps) => (
+              <Button
+                className={classes.googleButton}
+                color="primary"
+                fullWidth
+                onClick={renderProps.onClick}
+                disabled={renderProps.disabled}
+                startIcon={<Icon />}
+                variant="contained"
+              >
+                Goggle 로그인
+              </Button>
+            )}
+            onSuccess={googleSuccess}
+            onFailure={googleFailure}
+            cookiePolicy="single_host_origin"
+          />
           <Grid container justify="flex-end">
             <Grid item>
               <Button onClick={switchMode}>

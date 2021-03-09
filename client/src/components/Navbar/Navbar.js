@@ -1,12 +1,35 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { AppBar, Typography, Toolbar, Button, Avatar } from '@material-ui/core'
+import { useDispatch } from 'react-redux'
+import { LOGOUT } from '../../constants/actionTypes'
+import { useHistory, useLocation } from 'react-router-dom'
 import useStyles from './styles'
 import memories from '../../images/memories.png'
 
 function Navbar() {
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')))
+
   const classes = useStyles()
-  const user = null
+  const dispatch = useDispatch()
+  const history = useHistory()
+  const location = useLocation()
+
+  const logout = () => {
+    dispatch({ type: LOGOUT })
+    history.push('/')
+    setUser(null)
+  }
+
+  console.log(user)
+
+  useEffect(() => {
+    const token = user?.token
+
+    // JWT 작업 예정
+
+    setUser(JSON.parse(localStorage.getItem('profile')))
+  }, [location])
 
   return (
     <AppBar className={classes.appBar} position="static" color="inherit">
@@ -44,9 +67,9 @@ function Navbar() {
               variant="contained"
               className={classes.logout}
               color="secondary"
-              onClick={() => {}}
+              onClick={logout}
             >
-              Logout
+              로그아웃
             </Button>
           </div>
         ) : (
@@ -56,7 +79,7 @@ function Navbar() {
             variant="contained"
             color="primary"
           >
-            Sign In
+            로그인
           </Button>
         )}
       </Toolbar>
