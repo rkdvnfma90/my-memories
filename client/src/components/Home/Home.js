@@ -6,7 +6,7 @@ import useStyles from './styles'
 import Posts from '../Posts/Posts'
 import Form from '../Form/Form'
 
-function Home() {
+const Home = () => {
   const classes = useStyles()
   const dispatch = useDispatch()
 

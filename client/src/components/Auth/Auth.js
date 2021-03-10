@@ -25,7 +25,7 @@ const initialState = {
   confirmPassworld: '',
 }
 
-function Auth() {
+const Auth = () => {
   const [showPassword, setShowPassword] = useState(false)
   const [isSignUp, setIsSignUp] = useState(false)
   const [formData, setFormData] = useState(initialState)

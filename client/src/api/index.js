@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const API = axios.create({
-  baseURL: 'http://localhost:5000',
+  baseURL: 'https://ab-my-memories.herokuapp.com',
 })
 //const url = 'https://ab-my-memories.herokuapp.com'
 // const url = 'http://localhost:5000'
